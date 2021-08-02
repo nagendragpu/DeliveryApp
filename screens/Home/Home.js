@@ -7,7 +7,7 @@ import {
   TextInput,
   FlatList,
 } from "react-native";
-import { HorizontalFoodCard } from "../../components";
+import { HorizontalFoodCard, VerticalFoodCard } from "../../components";
 
 import { FONTS, SIZES, COLORS, icons, dummyData } from "../../constants";
 
@@ -42,6 +42,7 @@ const Home = () => {
 
   const [menuList, setMenuList] = React.useState([]);
   const [recommends, setrecommends] = React.useState([]);
+  const [popular, setPopular] = React.useState([]);
 
   useEffect(() => {
     handleChangeCategory(selectedCategoryId, selectedMenuType);
@@ -49,6 +50,9 @@ const Home = () => {
   }, []);
 
   function handleChangeCategory(categoryId, menuTypeId) {
+    //retrive the popular menu
+    let selectedPopular = dummyData.menu.find((a) => a.name == "Popular");
+
     //retrive recommeded menu
 
     let selectedRecommed = dummyData.menu.find((a) => a.name == "Recommended");
@@ -56,6 +60,11 @@ const Home = () => {
     //find the menu based on the menuTypeId
 
     let selectedMenu = dummyData.menu.find((a) => a.id == menuTypeId);
+
+    //set the popular menu based on the categoryId
+    setPopular(
+      selectedPopular?.list.filter((a) => a.categories.includes(categoryId))
+    );
 
     //set the recommended menu based on the category id
     setrecommends(
@@ -182,6 +191,34 @@ const Home = () => {
     );
   }
 
+  function renderPopularSection() {
+    return (
+      <Section
+        title="Popular Near You"
+        onPress={() => console.log("Show popular")}
+      >
+        <FlatList
+          data={popular}
+          keyExtractor={(item) => `${item.id}`}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item, index }) => {
+            return (
+              <VerticalFoodCard
+                containerStyle={{
+                  marginLeft: index == 0 ? SIZES.padding : 18,
+                  marginRight: index == popular.length - 1 ? SIZES.padding : 0,
+                }}
+                item={item}
+                onPress={() => console.log("VerticalFoodCard")}
+              />
+            );
+          }}
+        />
+      </Section>
+    );
+  }
+
   return (
     <View
       style={{
@@ -196,6 +233,8 @@ const Home = () => {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <View>
+            {renderPopularSection()}
+
             {renderRecommendedSection()}
 
             {renderMenuTypes()}
