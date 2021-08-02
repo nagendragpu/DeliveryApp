@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -7,10 +7,35 @@ import {
   TextInput,
   FlatList,
 } from "react-native";
+import { HorizontalFoodCard } from "../../components";
 
 import { FONTS, SIZES, COLORS, icons, dummyData } from "../../constants";
 
 const Home = () => {
+  const [selectedCategoryId, setSelectedCategoryId] = React.useState(1);
+
+  const [selectedMenuType, setSelectedMenuType] = React.useState(1);
+
+  const [menuList, setMenuList] = React.useState([]);
+
+  useEffect(() => {
+    handleChangeCategory(selectedCategoryId, selectedMenuType);
+    return () => {};
+  }, []);
+
+  function handleChangeCategory(categoryId, menuTypeId) {
+    //find the menu based on the menuTypeId
+
+    let selectedMenu = dummyData.menu.find((a) => a.id == menuTypeId);
+
+    //set the menu based on the categoryID
+    console.log(selectedMenu);
+
+    setMenuList(
+      selectedMenu?.list.filter((a) => a.categories.includes(categoryId))
+    );
+  }
+
   function renderSearch() {
     return (
       <View
@@ -48,6 +73,44 @@ const Home = () => {
     );
   }
 
+  function renderMenuTypes() {
+    return (
+      <FlatList
+        horizontal
+        data={dummyData.menu}
+        keyExtractor={(item) => `${item.id}`}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          marginTop: 30,
+          marginBottom: 20,
+        }}
+        renderItem={({ item, index }) => (
+          <TouchableOpacity
+            style={{
+              marginLeft: SIZES.padding,
+              marginRight:
+                index == dummyData.menu.length - 1 ? SIZES.padding : 0,
+            }}
+            onPress={() => {
+              setSelectedMenuType(item.id);
+              handleChangeCategory(selectedCategoryId, item.id);
+            }}
+          >
+            <Text
+              style={{
+                color:
+                  selectedMenuType == item.id ? COLORS.primary : COLORS.black,
+                ...FONTS.h3,
+              }}
+            >
+              {item.name}
+            </Text>
+          </TouchableOpacity>
+        )}
+      />
+    );
+  }
+
   return (
     <View
       style={{
@@ -55,6 +118,32 @@ const Home = () => {
       }}
     >
       {renderSearch()}
+
+      <FlatList
+        data={menuList}
+        keyExtractor={(item) => `${item.id}`}
+        showsVerticalScrollIndicator={false}
+        ListHeaderComponent={<View>{renderMenuTypes()}</View>}
+        renderItem={({ item, index }) => {
+          return (
+            <HorizontalFoodCard
+              containerStyle={{
+                height: 130,
+                alignItems: "center",
+                marginHorizontal: SIZES.padding,
+                marginBottom: SIZES.radius,
+              }}
+              imageStyle={{
+                marginTop: 20,
+                height: 110,
+                width: 110,
+              }}
+              item={item}
+              onPress={() => console.log("HorizontalFoodCard")}
+            />
+          );
+        }}
+      />
     </View>
   );
 };
