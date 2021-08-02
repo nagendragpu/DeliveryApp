@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
+import Animated from "react-native-reanimated";
 import { MainLayout } from "../screens";
 import {
   COLORS,
@@ -136,6 +137,17 @@ const CustomDrawerContent = ({ navigation }) => {
 };
 
 const CustomDrawer = () => {
+  const [progress, setProgress] = useState(new Animated.Value(0));
+  const scale = Animated.interpolateNode(progress, {
+    inputRange: [0, 1],
+    outputRange: [1, 0.8],
+  });
+  const borderRadius = Animated.interpolateNode(progress, {
+    inputRange: [0, 1],
+    outputRange: [1, 26],
+  });
+
+  const animatedStyle = { borderRadius, transform: [{ scale }] };
   return (
     <View
       style={{
@@ -155,11 +167,16 @@ const CustomDrawer = () => {
         sceneContainerStyle={{ backgroundColor: "transparent" }}
         initialRouteName="MainLayout"
         drawerContent={(props) => {
+          setTimeout(() => {
+            setProgress(props.progress);
+          }, 0);
           return <CustomDrawerContent navigation={props.navigation} />;
         }}
       >
         <Drawer.Screen name="MainLayout">
-          {(props) => <MainLayout {...props} />}
+          {(props) => (
+            <MainLayout {...props} drawerAnimationStyle={animatedStyle} />
+          )}
         </Drawer.Screen>
       </Drawer.Navigator>
     </View>
