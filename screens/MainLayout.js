@@ -26,6 +26,52 @@ import {
   dummyData,
 } from "../constants";
 
+const TabButton = ({ label, icon, isFocused, onPress }) => {
+  return (
+    <TouchableWithoutFeedback onPress={onPress}>
+      <Animated.View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Animated.View
+          style={{
+            flexDirection: "row",
+            width: "80%",
+            height: 50,
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 25,
+          }}
+        >
+          <Image
+            source={icon}
+            style={{
+              width: 20,
+              height: 20,
+              tintColor: COLORS.gray,
+            }}
+          />
+          {isFocused && (
+            <Text
+              numberOfLines={1}
+              style={{
+                marginLeft: SIZES.radius,
+                color: COLORS.gray,
+                ...FONTS.h3,
+              }}
+            >
+              {label}
+            </Text>
+          )}
+        </Animated.View>
+      </Animated.View>
+    </TouchableWithoutFeedback>
+  );
+};
+
 const MainLayout = ({
   drawerAnimationStyle,
   navigation,
@@ -112,6 +158,62 @@ const MainLayout = ({
             botderTopRightRadius: 15,
           }}
         />
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            paddingHorizontal: SIZES.radius,
+            paddingBottom: 10,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            backgroundColor: COLORS.white,
+          }}
+        >
+          <TabButton
+            label={constants.screens.home}
+            icon={icons.home}
+            isFocused={selectedTab == constants.screens.home}
+            onPress={() => {
+              setSelectedTab(constants.screens.home);
+            }}
+          />
+
+          <TabButton
+            label={constants.screens.search}
+            icon={icons.search}
+            isFocused={selectedTab == constants.screens.search}
+            onPress={() => {
+              setSelectedTab(constants.screens.search);
+            }}
+          />
+
+          <TabButton
+            label={constants.screens.cart}
+            icon={icons.cart}
+            isFocused={selectedTab == constants.screens.cart}
+            onPress={() => {
+              setSelectedTab(constants.screens.cart);
+            }}
+          />
+
+          <TabButton
+            label={constants.screens.favourite}
+            icon={icons.favourite}
+            isFocused={selectedTab == constants.screens.favourite}
+            onPress={() => {
+              setSelectedTab(constants.screens.favourite);
+            }}
+          />
+
+          <TabButton
+            label={constants.screens.notification}
+            icon={icons.notification}
+            isFocused={selectedTab == constants.screens.notification}
+            onPress={() => {
+              setSelectedTab(constants.screens.notification);
+            }}
+          />
+        </View>
       </View>
     </Animated.View>
   );
