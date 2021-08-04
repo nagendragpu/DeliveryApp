@@ -17,7 +17,12 @@ import {
   constants,
 } from "../../constants";
 
-import { IconButton, TwoPointSlider, TextButton } from "../../components";
+import {
+  IconButton,
+  TwoPointSlider,
+  TextButton,
+  TextIconButton,
+} from "../../components";
 
 // custom components
 
@@ -142,6 +147,40 @@ const FilterModal = ({ isVisible, onClose }) => {
     );
   }
 
+  function renderRatings() {
+    return (
+      <Section title="Ratings" containerStyle={{ marginTop: 40 }}>
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          {constants.ratings.map((item, index) => {
+            return (
+              <TextIconButton
+                key={`Ratings-${index}`}
+                containerStyle={{
+                  flex: 1,
+                  height: 50,
+                  margin: 5,
+                  alignItems: "center",
+                  borderRadius: SIZES.base,
+                  backgroundColor:
+                    item.id == ratings ? COLORS.primary : COLORS.lightGray2,
+                }}
+                label={item.label}
+                labelStyle={{
+                  color: item.id == ratings ? COLORS.white : COLORS.gray,
+                }}
+                icon={icons.star}
+                iconStyle={{
+                  tintColor: item.id == ratings ? COLORS.white : COLORS.gray,
+                }}
+                onPress={() => setRatings(item.id)}
+              />
+            );
+          })}
+        </View>
+      </Section>
+    );
+  }
+
   return (
     <Modal animationType="fade" transparent={true} visible={isVisible}>
       <View
@@ -211,6 +250,8 @@ const FilterModal = ({ isVisible, onClose }) => {
             {renderDeliveryTime()}
 
             {renderPricingRange()}
+
+            {renderRatings()}
           </ScrollView>
         </Animated.View>
       </View>
