@@ -27,7 +27,6 @@ const TwoPointSlider = ({
         height: 10,
         borderRadius: 10,
       }}
-      onValuesChange={onValuesChange}
       minMarkerOverlapDistance={50}
       customMarker={(e) => {
         return (
@@ -48,10 +47,21 @@ const TwoPointSlider = ({
                 backgroundColor: COLORS.primary,
                 ...styles.shadow,
               }}
-            ></View>
+            />
+            <Text
+              style={{
+                marginTop: 5,
+                color: COLORS.darkGray,
+                ...FONTS.body3,
+              }}
+            >
+              {prefix}
+              {e.currentValue} {postfix}
+            </Text>
           </View>
         );
       }}
+      onValuesChange={onValuesChange}
     />
   );
 };

@@ -140,6 +140,8 @@ const FilterModal = ({ isVisible, onClose }) => {
             }}
           >
             {renderDistance()}
+
+            {/* {renderDeliveryTime()} */}
           </ScrollView>
         </Animated.View>
       </View>
