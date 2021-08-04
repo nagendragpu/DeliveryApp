@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { FONTS, SIZES, COLORS, icons, dummyData } from "../../constants";
 
-import { IconButton } from "../../components";
+import { IconButton, TwoPointSlider } from "../../components";
 
 // custom components
 
@@ -60,7 +60,19 @@ const FilterModal = ({ isVisible, onClose }) => {
   });
 
   function renderDistance() {
-    return <Section title="Distance"></Section>;
+    return (
+      <Section title="Distance">
+        <View style={{ alignItems: "center" }}>
+          <TwoPointSlider
+            values={[3, 10]}
+            min={1}
+            max={20}
+            postfix="km"
+            onValuesChange={(values) => console.log(values)}
+          />
+        </View>
+      </Section>
+    );
   }
 
   return (
