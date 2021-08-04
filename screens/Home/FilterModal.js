@@ -12,6 +12,28 @@ import { FONTS, SIZES, COLORS, icons, dummyData } from "../../constants";
 
 import { IconButton } from "../../components";
 
+// custom components
+
+const Section = ({ containerStyle, title, children }) => {
+  return (
+    <View
+      style={{
+        marginTop: SIZES.padding,
+        ...containerStyle,
+      }}
+    >
+      <Text
+        style={{
+          ...FONTS.h3,
+        }}
+      >
+        {title}
+      </Text>
+      {children}
+    </View>
+  );
+};
+
 const FilterModal = ({ isVisible, onClose }) => {
   const modalAnimatedValue = React.useRef(new Animated.Value(0)).current;
   const [showFilterMode, setShowFilterMode] = React.useState(isVisible);
@@ -36,6 +58,10 @@ const FilterModal = ({ isVisible, onClose }) => {
     inputRange: [0, 1],
     outputRange: [SIZES.height, SIZES.height - 550],
   });
+
+  function renderDistance() {
+    return <Section title="Distance"></Section>;
+  }
 
   return (
     <Modal animationType="fade" transparent={true} visible={isVisible}>
@@ -94,6 +120,15 @@ const FilterModal = ({ isVisible, onClose }) => {
               onPress={() => setShowFilterMode(false)}
             />
           </View>
+
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingBottom: 250,
+            }}
+          >
+            {renderDistance()}
+          </ScrollView>
         </Animated.View>
       </View>
     </Modal>
