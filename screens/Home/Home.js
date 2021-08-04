@@ -10,6 +10,7 @@ import {
 import { HorizontalFoodCard, VerticalFoodCard } from "../../components";
 
 import { FONTS, SIZES, COLORS, icons, dummyData } from "../../constants";
+import { FilterModal } from "../";
 
 const Section = ({ title, onPress, children }) => {
   return (
@@ -43,6 +44,8 @@ const Home = () => {
   const [menuList, setMenuList] = React.useState([]);
   const [recommends, setrecommends] = React.useState([]);
   const [popular, setPopular] = React.useState([]);
+
+  const [showFilterMode, setShowFilterMode] = React.useState(false);
 
   useEffect(() => {
     handleChangeCategory(selectedCategoryId, selectedMenuType);
@@ -106,7 +109,7 @@ const Home = () => {
           placeholder="search food"
         />
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setShowFilterMode(true)}>
           <Image
             source={icons.filter}
             style={{ height: 20, width: 20, tintColor: COLORS.black }}
@@ -328,6 +331,13 @@ const Home = () => {
       }}
     >
       {renderSearch()}
+
+      {showFilterMode && (
+        <FilterModal
+          isVisible={showFilterMode}
+          onClose={() => setShowFilterMode(false)}
+        />
+      )}
 
       <FlatList
         data={menuList}
