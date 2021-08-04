@@ -181,6 +181,44 @@ const FilterModal = ({ isVisible, onClose }) => {
     );
   }
 
+  function renderTags() {
+    return (
+      <Section title="Tags">
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            marginTop: SIZES.radius,
+          }}
+        >
+          {constants.tags.map((item, index) => {
+            return (
+              <TextButton
+                key={`tags-${index}`}
+                label={item.label}
+                labelStyle={{
+                  color: item.id == tags ? COLORS.white : COLORS.gray,
+                  ...FONTS.body3,
+                }}
+                buttonContainerStyle={{
+                  //   width: "30%",
+                  paddingHorizontal: SIZES.padding - 2,
+                  height: 50,
+                  margin: 5,
+                  alignItems: "center",
+                  borderRadius: SIZES.base,
+                  backgroundColor:
+                    item.id == tags ? COLORS.primary : COLORS.lightGray2,
+                }}
+                onPress={() => setTags(item.id)}
+              />
+            );
+          })}
+        </View>
+      </Section>
+    );
+  }
+
   return (
     <Modal animationType="fade" transparent={true} visible={isVisible}>
       <View
@@ -252,6 +290,8 @@ const FilterModal = ({ isVisible, onClose }) => {
             {renderPricingRange()}
 
             {renderRatings()}
+
+            {renderTags()}
           </ScrollView>
         </Animated.View>
       </View>
